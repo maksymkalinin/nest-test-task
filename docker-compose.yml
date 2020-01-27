@@ -1,0 +1,18 @@
+version: '3'
+services:
+    db:
+        container_name: 'NestTestAppDB'
+        image: 'postgres'
+        restart: 'always'
+        environment: 
+            POSTGRES_USER: 'nest_test_user'
+            POSTGRES_PASSWORD: 'n3st_t3st_us3r'
+            POSTGRES_DB: 'nesttest'
+        ports: 
+            - '5432:5432'
+    adminer:
+        container_name: 'NestTestAppAdminer'
+        image: 'adminer'
+        restart: 'always'
+        ports:
+            - '8080:8080'
