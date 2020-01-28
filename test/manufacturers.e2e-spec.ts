@@ -6,7 +6,10 @@ import { DatabaseModule } from '../src/database/database.module';
 import { DatabaseService } from '../src/database/database.service';
 import { Manufacturer } from '../src/manufacturer/manufacturer.entity';
 import { ManufacturerModule } from '../src/manufacturer/manufacturer.module';
-import { CreateManufacturerDto, UpdateManufacturerDto } from '../src/manufacturer/dto';
+import {
+  CreateManufacturerDto,
+  UpdateManufacturerDto
+} from '../src/manufacturer/dto';
 
 describe('Manufacturers', () => {
   let app: INestApplication;

@@ -66,7 +66,7 @@ describe('CarsController', () => {
   });
 
   describe('getOne', () => {
-    it('should return a car', async () => {
+    it('should return car', async () => {
       const result: Car = new Car();
 
       jest.spyOn(carsService, 'getOne').mockImplementation(async () => result);
@@ -76,7 +76,7 @@ describe('CarsController', () => {
   });
 
   describe('getManufacturer', () => {
-    it('should return a manufacturer', async () => {
+    it('should return cars manufacturer', async () => {
       const result: Manufacturer = new Manufacturer();
 
       jest.spyOn(carsService, 'getManufacturer').mockImplementation(async () => result);
@@ -86,7 +86,7 @@ describe('CarsController', () => {
   });
 
   describe('create', () => {
-    it('should return a car', async () => {
+    it('should return created car', async () => {
       const result: Car = new Car();
 
       jest.spyOn(carsService, 'create').mockImplementation(async () => result);
@@ -96,7 +96,7 @@ describe('CarsController', () => {
   });
 
   describe('update', () => {
-    it('should return a car', async () => {
+    it('should return updated car', async () => {
       const result: Car = new Car();
 
       jest.spyOn(carsService, 'update').mockImplementation(async () => result);
@@ -106,7 +106,7 @@ describe('CarsController', () => {
   });
 
   describe('put', () => {
-    it('should return a car', async () => {
+    it('should return updated car', async () => {
       const result: Car = new Car();
 
       jest.spyOn(carsService, 'put').mockImplementation(async () => result);
@@ -116,7 +116,7 @@ describe('CarsController', () => {
   });
 
   describe('delete', () => {
-    it('should return a car', async () => {
+    it('should return deleted car id', async () => {
       const result = { id: 'string' };
 
       jest.spyOn(carsService, 'delete').mockImplementation(async () => result);

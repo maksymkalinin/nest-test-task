@@ -50,7 +50,7 @@ describe('OwnersController', () => {
   });
 
   describe('getOne', () => {
-    it('should return an owner', async () => {
+    it('should return owner', async () => {
       const result = new Owner();
       jest
         .spyOn(ownersService, 'getOne')
@@ -61,7 +61,7 @@ describe('OwnersController', () => {
   });
 
   describe('create', () => {
-    it('should return a new owner', async () => {
+    it('should return created owner', async () => {
       const result = new Owner();
       const body: CreateOwnerDto = {
         name: 'N_A_M_E',

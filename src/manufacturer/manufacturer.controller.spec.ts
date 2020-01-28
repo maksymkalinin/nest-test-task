@@ -43,7 +43,7 @@ describe('ManufacturersModule', () => {
   });
 
   describe('getOne', () => {
-    it('should return an object of manufacturer', async () => {
+    it('should return manufacturer', async () => {
       const result: Manufacturer = new Manufacturer();
 
       jest
@@ -55,7 +55,7 @@ describe('ManufacturersModule', () => {
   });
 
   describe('create', () => {
-    it('should return an object of manufacturer', async () => {
+    it('should return created manufacturer', async () => {
       const result: Manufacturer = new Manufacturer();
       const body: CreateManufacturerDto = {
         name: 'name',
@@ -72,7 +72,7 @@ describe('ManufacturersModule', () => {
   });
 
   describe('update', () => {
-    it('should return an object of manufacturer', async () => {
+    it('should return updated manufacturer', async () => {
       const result: Manufacturer = new Manufacturer();
       const body: UpdateManufacturerDto = {
         name: 'new-name'
@@ -87,7 +87,7 @@ describe('ManufacturersModule', () => {
   });
 
   describe('delete', () => {
-    it('should return an object of manufacturer', async () => {
+    it('should return deleted manufacturer id', async () => {
       const result = { id: 'manuf_id' };
 
       jest
