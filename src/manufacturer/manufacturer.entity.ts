@@ -11,6 +11,6 @@ export class Manufacturer {
   @Column({ type: 'varchar', length: 20 })
   phone: string;
 
-  @Column({ type: 'numeric', precision: 20, scale: 0 })
+  @Column({ type: 'int' })
   siret: number;
 }

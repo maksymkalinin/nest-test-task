@@ -14,7 +14,6 @@ import { CreateCarDto, UpdateCarDto } from './dto';
 import { ManufacturersService } from '../manufacturer/manufacturer.service';
 import { OwnersService } from './../owner/owner.service';
 import { Manufacturer } from '../manufacturer/manufacturer.entity';
-import { Owner } from '../owner/owner.entity';
 
 @Injectable()
 export class CarsService {
@@ -28,15 +27,13 @@ export class CarsService {
   ) {}
 
   public async getAll(filters: FindManyOptions<Car> = {}): Promise<Car[]> {
-    filters.relations = ['manufacturer', 'owners'];
-    return await this.carRepository.find(filters);
+    return this.carRepository.find(filters);
   }
 
   public async getOne(
     id: string,
     filters: FindOneOptions<Car> = {}
   ): Promise<Car> {
-    filters.relations = filters.relations || ['manufacturer', 'owners'];
     const car: Car = await this.carRepository.findOne(id, filters);
     if (!car) {
       throw new Error('Not found');
@@ -58,11 +55,13 @@ export class CarsService {
     const carData: Partial<Car> = {
       price: data.price,
       firstRegistrationDate: data.firstRegistrationDate,
-      manufacturer: await this.manufacturersService.getOne(data.manufacturerId),
-      owners: await this.ownerService.getAll({
-        where: { id: In(data.ownerIds) }
-      })
+      manufacturer: await this.manufacturersService.getOne(data.manufacturerId)
     };
+    if (data.ownerIds && data.ownerIds.length) {
+      carData.owners = await this.ownerService.getAll({
+        where: { id: In(data.ownerIds) }
+      });
+    }
     const createdCar: Car = this.carRepository.create(carData);
     await this.carRepository.save(createdCar);
     return createdCar;
@@ -97,9 +96,7 @@ export class CarsService {
   }
 
   public async put(id: string, data: CreateCarDto): Promise<Car> {
-    const carToUpdate: Car = await this.carRepository.findOne(id, {
-      relations: ['manufacturer', 'owners']
-    });
+    const carToUpdate: Car = await this.carRepository.findOne(id);
 
     if (!carToUpdate) {
       throw new Error('Not found');
@@ -152,12 +149,12 @@ export class CarsService {
     return await this.carRepository.find(filters);
   }
 
-  public async delete(id: string): Promise<Car> {
+  public async delete(id: string): Promise<{ id: string }> {
     const carToRemove = await this.carRepository.findOne(id);
     if (!carToRemove) {
       throw new Error('Not found');
     }
     await this.carRepository.remove(carToRemove);
-    return carToRemove;
+    return { id };
   }
 }

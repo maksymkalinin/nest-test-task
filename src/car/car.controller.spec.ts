@@ -117,7 +117,7 @@ describe('CarsController', () => {
 
   describe('delete', () => {
     it('should return a car', async () => {
-      const result: Car = new Car();
+      const result = { id: 'string' };
 
       jest.spyOn(carsService, 'delete').mockImplementation(async () => result);
 

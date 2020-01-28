@@ -96,7 +96,7 @@ export class CarsController {
   }
 
   @Delete('/:id')
-  public async delete(@Param('id') id: string): Promise<Car> {
+  public async delete(@Param('id') id: string): Promise<{ id: string }> {
     try {
       return await this.carsService.delete(id);
     } catch (error) {
