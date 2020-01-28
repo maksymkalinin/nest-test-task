@@ -4,16 +4,15 @@ import { INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from '../src/database/database.module';
 import { DatabaseService } from '../src/database/database.service';
-import { Manufacturer } from '../src/manufacturer/manufacturer.entity';
 import { ManufacturerModule } from '../src/manufacturer/manufacturer.module';
 import {
   CreateManufacturerDto,
   UpdateManufacturerDto
 } from '../src/manufacturer/dto';
+import { ManufacturersService } from '../src/manufacturer/manufacturer.service';
 
-describe('Manufacturers', () => {
+export default () => {
   let app: INestApplication;
-  let manufacturer: Manufacturer;
 
   const createManufacturer: CreateManufacturerDto = {
     name: 'man_name',
@@ -26,6 +25,19 @@ describe('Manufacturers', () => {
     phone: 'new phone'
   };
 
+  const manufacturer = {
+    ...createManufacturer,
+    id: 'manufacturer_id'
+  };
+
+  const manufacturersService = {
+    getAll: () => [manufacturer],
+    getOne: () => manufacturer,
+    create: () => manufacturer,
+    update: () => ({ ...manufacturer, ...updateManufacturer }),
+    delete: () => ({ id: manufacturer.id })
+  };
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
@@ -35,7 +47,10 @@ describe('Manufacturers', () => {
         }),
         ManufacturerModule
       ]
-    }).compile();
+    })
+      .overrideProvider(ManufacturersService)
+      .useValue(manufacturersService)
+      .compile();
 
     app = module.createNestApplication();
     await app.init();
@@ -46,14 +61,7 @@ describe('Manufacturers', () => {
       .post('/manufacturers')
       .set('Accept', 'application/json')
       .send(createManufacturer)
-      .expect(201)
-      .expect(({ body }) => {
-        expect(body.name).toEqual(createManufacturer.name);
-        expect(body.phone).toEqual(createManufacturer.phone);
-        expect(body.siret).toEqual(createManufacturer.siret);
-        expect(body.id).toBeDefined();
-        manufacturer = body;
-      });
+      .expect(200, manufacturersService.create());
   });
 
   it('GET manufacturers', () => {
@@ -63,7 +71,7 @@ describe('Manufacturers', () => {
       .expect(200)
       .expect(({ body }) => {
         expect(body).toHaveLength(1);
-        expect(body[0]).toMatchObject(manufacturer);
+        expect(body).toMatchObject(manufacturersService.getAll());
       });
   });
 
@@ -71,10 +79,7 @@ describe('Manufacturers', () => {
     return request(app.getHttpServer())
       .get(`/manufacturers/${manufacturer.id}`)
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body).toMatchObject(manufacturer);
-      });
+      .expect(200, manufacturersService.getOne());
   });
 
   it('PATCH manufacturer', () => {
@@ -82,33 +87,17 @@ describe('Manufacturers', () => {
       .patch(`/manufacturers/${manufacturer.id}`)
       .set('Accept', 'application/json')
       .send(updateManufacturer)
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body.name).toEqual(updateManufacturer.name);
-        expect(body.phone).toEqual(updateManufacturer.phone);
-        expect(body.siret).toEqual(manufacturer.siret);
-        expect(body.id).toEqual(manufacturer.id);
-      });
+      .expect(200, manufacturersService.update());
   });
 
   it('DELETE manufacturer', () => {
     return request(app.getHttpServer())
       .delete(`/manufacturers/${manufacturer.id}`)
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body.id).toEqual(manufacturer.id);
-      });
-  });
-
-  it('GET deleted manufacturer', () => {
-    return request(app.getHttpServer())
-      .get(`/manufacturers/${manufacturer.id}`)
-      .set('Accept', 'application/json')
-      .expect(404);
+      .expect(200, manufacturersService.delete());
   });
 
   afterAll(async () => {
     await app.close();
   });
-});
+};

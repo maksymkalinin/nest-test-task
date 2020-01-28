@@ -7,7 +7,8 @@ import {
   HttpException,
   Param,
   Body,
-  NotFoundException
+  NotFoundException,
+  HttpCode
 } from '@nestjs/common';
 import { CreateManufacturerDto, UpdateManufacturerDto } from './dto';
 import { Manufacturer } from './manufacturer.entity';
@@ -40,6 +41,7 @@ export class ManufacturersController {
   }
 
   @Post('/')
+  @HttpCode(200)
   public async create(
     @Body() data: CreateManufacturerDto
   ): Promise<Manufacturer> {

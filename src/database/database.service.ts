@@ -15,10 +15,14 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_DATABASE'),
       entities: ['dist/**/*.entity.js'],
-      synchronize: this.configService.get<boolean>('DB_SYNCHRONIZE'),
-      dropSchema: this.configService.get<boolean>('DB_DROPSCHEMA')
+      synchronize: this.getBool(this.configService.get<string>('DB_SYNCHRONIZE')),
+      dropSchema: this.getBool(this.configService.get<string>('DB_DROPSCHEMA'))
     };
     return options;
+  }
+
+  private getBool(value: string): boolean {
+    return value === 'true';
   }
 
   public createTypeOrmOptions(): TypeOrmModuleOptions {

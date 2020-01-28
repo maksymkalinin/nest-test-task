@@ -8,7 +8,8 @@ import {
   Body,
   Param,
   HttpException,
-  NotFoundException
+  NotFoundException,
+  HttpCode
 } from '@nestjs/common';
 import { CreateCarDto, UpdateCarDto } from './dto';
 import { Car } from './car.entity';
@@ -55,6 +56,7 @@ export class CarsController {
   }
 
   @Post('/')
+  @HttpCode(200)
   public async create(@Body() data: CreateCarDto): Promise<Car> {
     try {
       return await this.carsService.create(data);

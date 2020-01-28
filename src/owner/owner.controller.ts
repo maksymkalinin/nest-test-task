@@ -7,7 +7,8 @@ import {
   Param,
   Body,
   HttpException,
-  NotFoundException
+  NotFoundException,
+  HttpCode
 } from '@nestjs/common';
 import { OwnersService } from './owner.service';
 import { Owner } from './owner.entity';
@@ -39,6 +40,7 @@ export class OwnersController {
   }
 
   @Post('/')
+  @HttpCode(200)
   public async create(@Body() data: CreateOwnerDto): Promise<Owner> {
     try {
       return await this.ownersService.create(data);

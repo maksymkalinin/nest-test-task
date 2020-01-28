@@ -2,16 +2,14 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
 import { DatabaseModule } from '../src/database/database.module';
 import { DatabaseService } from '../src/database/database.service';
-import { Owner } from '../src/owner/owner.entity';
 import { OwnersModule } from '../src/owner/owner.module';
 import { CreateOwnerDto, UpdateOwnerDto } from '../src/owner/dto';
+import { OwnersService } from '../src/owner/owner.service';
 
-describe('Owners', () => {
+export default () => {
   let app: INestApplication;
-  let owner: Owner;
 
   const createOwner: CreateOwnerDto = {
     name: 'owner-name',
@@ -20,6 +18,19 @@ describe('Owners', () => {
 
   const updateOwner: UpdateOwnerDto = {
     name: 'new owner name'
+  };
+
+  const owner = {
+    ...createOwner,
+    id: 'owner_id'
+  };
+
+  const ownersService = {
+    getAll: () => [owner],
+    getOne: () => owner,
+    create: () => owner,
+    update: () => ({ ...owner, updateOwner }),
+    delete: () => owner.id
   };
 
   beforeAll(async () => {
@@ -31,80 +42,63 @@ describe('Owners', () => {
         }),
         OwnersModule
       ]
-    }).compile();
+    })
+      .overrideProvider(OwnersService)
+      .useValue(ownersService)
+      .compile();
 
     app = module.createNestApplication();
     await app.init();
   });
 
   it('POST owner', () => {
+    const expectedResult = JSON.parse(JSON.stringify(ownersService.create()));
+
     return request(app.getHttpServer())
       .post('/owners')
       .set('Accept', 'application/json')
       .send(createOwner)
-      .expect(201)
-      .expect(({ body }) => {
-        expect(body.name).toEqual(createOwner.name);
-        expect(body.purchaseDate).toEqual(
-          new Date(createOwner.purchaseDate).toISOString()
-        );
-        expect(body.id).toBeDefined();
-        owner = body;
-      });
+      .expect(200, expectedResult);
   });
 
   it('GET owners', () => {
+    const expectedResult = JSON.parse(JSON.stringify(ownersService.getAll()));
+
     return request(app.getHttpServer())
       .get('/owners')
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body).toHaveLength(1);
-        expect(body[0]).toMatchObject(owner);
-      });
+      .expect(200, expectedResult);
   });
 
   it('GET owner by id', () => {
+    const expectedResult = JSON.parse(JSON.stringify(ownersService.getOne()));
+
     return request(app.getHttpServer())
       .get(`/owners/${owner.id}`)
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body).toMatchObject(owner);
-      });
+      .expect(200, expectedResult);
   });
 
   it('PATCH owner', () => {
+    const expectedResult = JSON.parse(JSON.stringify(ownersService.update()));
+
     return request(app.getHttpServer())
       .patch(`/owners/${owner.id}`)
       .set('Accept', 'application/json')
       .send(updateOwner)
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body.name).toEqual(updateOwner.name);
-        expect(body.purchaseDate).toEqual(owner.purchaseDate);
-        expect(body.id).toEqual(owner.id);
-      });
+      .expect(200, expectedResult);
   });
 
   it('DELETE owner', () => {
+    const expectedResult = JSON.parse(JSON.stringify(ownersService.delete()));
+
     return request(app.getHttpServer())
       .delete(`/owners/${owner.id}`)
       .set('Accept', 'application/json')
-      .expect(200)
-      .expect(({ body }) => {
-        expect(body.id).toEqual(owner.id);
-      });
-  });
-
-  it('GET deleted owner', () => {
-    return request(app.getHttpServer())
-      .get(`/owners/${owner.id}`)
-      .set('Accept', 'application/json')
-      .expect(404);
+      .expect(200, expectedResult);
   });
 
   afterAll(async () => {
     await app.close();
   });
-});
+};
