@@ -1,19 +1,17 @@
 import * as request from 'supertest';
 import axios from 'axios';
 import { Test } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 import { DatabaseModule } from '../src/database/database.module';
 import { DatabaseService } from '../src/database/database.service';
 import { Car } from '../src/car/car.entity';
 import { CarsModule } from '../src/car/car.module';
 import { CreateCarDto, UpdateCarDto } from '../src/car/dto';
-import { OwnersModule } from '../src/owner/owner.module';
 import { Manufacturer } from '../src/manufacturer/manufacturer.entity';
 import { ManufacturerModule } from '../src/manufacturer/manufacturer.module';
 import { CreateManufacturerDto } from '../src/manufacturer/dto';
-import { CreateOwnerDto } from '../src/owner/dto';
-import { INestApplication } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
 
 describe('Cars', () => {
   let app: INestApplication;
@@ -49,11 +47,6 @@ describe('Cars', () => {
     siret: 222222
   };
 
-  const createOwner: CreateOwnerDto = {
-    name: 'first',
-    purchaseDate: new Date('2020-01-01T10:10:10.101Z')
-  };
-
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
@@ -62,7 +55,6 @@ describe('Cars', () => {
           useExisting: DatabaseService
         }),
         CarsModule,
-        OwnersModule,
         ManufacturerModule
       ]
     }).compile();
@@ -89,7 +81,7 @@ describe('Cars', () => {
     manufacturer2 = data2;
   });
 
-  it('/POST car', () => {
+  it('POST car', () => {
     return request(app.getHttpServer())
       .post('/cars')
       .set('Accept', 'application/json')
@@ -106,9 +98,10 @@ describe('Cars', () => {
       .expect(201);
   });
 
-  it('/GET cars', () => {
+  it('GET cars', () => {
     return request(app.getHttpServer())
       .get('/cars')
+      .set('Accept', 'application/json')
       .expect(({ body }) => {
         expect(body).toHaveLength(1);
         expect(body[0]).toMatchObject({
@@ -121,9 +114,10 @@ describe('Cars', () => {
       .expect(200);
   });
 
-  it('/GET car', () => {
+  it('GET car', () => {
     return request(app.getHttpServer())
       .get(`/cars/${createdCar.id}`)
+      .set('Accept', 'application/json')
       .expect(200)
       .expect({
         price: createdCar.price,
@@ -133,16 +127,18 @@ describe('Cars', () => {
       });
   });
 
-  it('/GET car manufacturer', () => {
+  it('GET car manufacturer', () => {
     return request(app.getHttpServer())
       .get(`/cars/${createdCar.id}/manufacturer`)
+      .set('Accept', 'application/json')
       .expect(manufacturer)
       .expect(200);
   });
 
-  it('/PATCH car', () => {
+  it('PATCH car', () => {
     return request(app.getHttpServer())
       .patch(`/cars/${createdCar.id}`)
+      .set('Accept', 'application/json')
       .send(updateCarDto)
       .expect(({ body }) => {
         expect(body.price).toEqual(updateCarDto.price);
@@ -150,9 +146,10 @@ describe('Cars', () => {
       .expect(200);
   });
 
-  it('/PUT car', () => {
+  it('PUT car', () => {
     return request(app.getHttpServer())
       .put(`/cars/${createdCar.id}`)
+      .set('Accept', 'application/json')
       .send({ ...putCarDto, manufacturerId: manufacturer2.id })
       .expect(({ body }) => {
         expect(body.price).toEqual(putCarDto.price);
@@ -165,16 +162,18 @@ describe('Cars', () => {
       .expect(200);
   });
 
-  it('/GET car manufacturer2', () => {
+  it('GET car manufacturer2', () => {
     return request(app.getHttpServer())
       .get(`/cars/${createdCar.id}/manufacturer`)
+      .set('Accept', 'application/json')
       .expect(manufacturer2)
       .expect(200);
   });
 
-  it('/DELETE car', () => {
+  it('DELETE car', () => {
     return request(app.getHttpServer())
       .delete(`/cars/${createdCar.id}`)
+      .set('Accept', 'application/json')
       .expect(({ body }) => {
         expect(body.id).toEqual(createdCar.id);
       })
