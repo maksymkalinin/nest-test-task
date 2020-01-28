@@ -14,7 +14,7 @@ import {
 import { CreateCarDto, UpdateCarDto } from './dto';
 import { Car } from './car.entity';
 import { CarsService } from './car.service';
-import { Manufacturer } from 'src/manufacturer/manufacturer.entity';
+import { Manufacturer } from '../manufacturer/manufacturer.entity';
 
 @Controller('/cars')
 export class CarsController {

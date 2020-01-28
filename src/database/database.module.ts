@@ -7,8 +7,8 @@ import * as path from 'path';
   imports: [
     ConfigModule.forRoot({
       envFilePath: path.join(
-        __dirname,
-        '../../env',
+        process.cwd(),
+        'env',
         `.${process.env.NODE_ENV || 'development'}.env`
       )
     })
