@@ -47,13 +47,13 @@ export class ManufacturersService {
     return manufacturerToUpdate;
   }
 
-  public async delete(id: string): Promise<Manufacturer> {
+  public async delete(id: string): Promise<{ id: string }> {
     const manufacturerToRemove: Manufacturer = await this.manufacturersRepository.findOne(id);
     if (!manufacturerToRemove) {
       throw new Error(`Manufacturer doesn't exist`);
     }
 
     await this.manufacturersRepository.remove(manufacturerToRemove);
-    return manufacturerToRemove;
+    return { id };
   }
 }

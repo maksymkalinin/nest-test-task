@@ -88,7 +88,7 @@ describe('ManufacturersModule', () => {
 
   describe('delete', () => {
     it('should return an object of manufacturer', async () => {
-      const result: Manufacturer = new Manufacturer();
+      const result = { id: 'manuf_id' };
 
       jest
         .spyOn(manufacturersService, 'delete')

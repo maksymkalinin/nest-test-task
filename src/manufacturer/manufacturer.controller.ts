@@ -67,7 +67,7 @@ export class ManufacturersController {
   }
 
   @Delete('/:id')
-  public async delete(@Param('id') id: string): Promise<Manufacturer> {
+  public async delete(@Param('id') id: string): Promise<{ id: string }> {
     try {
       return await this.manufacturersService.delete(id);
     } catch (error) {
