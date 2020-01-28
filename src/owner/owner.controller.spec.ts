@@ -92,8 +92,8 @@ describe('OwnersController', () => {
   });
 
   describe('delete', () => {
-    it('should return owner', async () => {
-      const result = new Owner();
+    it('should return owner id', async () => {
+      const result = { id: 'owner_id' };
 
       jest
         .spyOn(ownersService, 'delete')

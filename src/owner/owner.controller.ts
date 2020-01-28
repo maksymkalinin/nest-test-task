@@ -60,7 +60,7 @@ export class OwnersController {
   }
 
   @Delete('/:id')
-  public async delete(@Param('id') id: string): Promise<Owner> {
+  public async delete(@Param('id') id: string): Promise<{ id: string }> {
     try {
       return await this.ownersService.delete(id);
     } catch (error) {

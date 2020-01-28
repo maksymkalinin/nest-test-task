@@ -63,13 +63,13 @@ export class OwnersService {
     return this.ownerRepository.find(filters);
   }
 
-  public async delete(id: string): Promise<Owner> {
+  public async delete(id: string): Promise<{ id: string }> {
     const ownerToDelete = await this.ownerRepository.findOne(id);
     if (!ownerToDelete) {
       throw new Error('Not found');
     }
     await this.ownerRepository.delete(id);
-    return ownerToDelete;
+    return { id };
   }
 
   public async deleteMany(filters?: FindConditions<Owner>): Promise<Owner[]> {
