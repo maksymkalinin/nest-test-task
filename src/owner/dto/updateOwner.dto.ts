@@ -3,11 +3,11 @@ import { IsOptional, IsString, IsDateString, IsUUID } from 'class-validator';
 export class UpdateOwnerDto {
   @IsOptional()
   @IsString()
-  readonly name: string;
+  readonly name?: string;
 
   @IsOptional()
   @IsDateString()
-  readonly purchaseDate: Date;
+  readonly purchaseDate?: Date;
 
   @IsOptional()
   @IsUUID('4')
