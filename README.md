@@ -28,13 +28,35 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Running the app and test inside docker
+
+### Running the app
+
+```bash
+$ docker-compose up
+```
+
+### Test
+
+```bash
+# unit tests in docker
+$ docker-compose -f docker-compose.test.yml up
+
+# e2e test in docker
+$ docker-compose -f docker-compose.e2e-test.yml up
+```
+
+## Running the app and test locally
+
+Ensure that you have running Postgres
+
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
@@ -47,7 +69,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+### Test
 
 ```bash
 # unit tests
