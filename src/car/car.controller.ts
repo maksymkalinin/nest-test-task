@@ -25,7 +25,7 @@ export class CarsController {
     try {
       return await this.carsService.getAll();
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -34,10 +34,10 @@ export class CarsController {
     try {
       return await this.carsService.getOne(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Car not found') {
         throw new NotFoundException('Car not found!');
       } else {
-        throw new HttpException(error, 422);
+        throw new HttpException(error.message, 422);
       }
     }
   }
@@ -47,10 +47,10 @@ export class CarsController {
     try {
       return await this.carsService.getManufacturer(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Car not found') {
         throw new NotFoundException('Car not found!');
       } else {
-        throw new HttpException(error, 422);
+        throw new HttpException(error.message, 422);
       }
     }
   }
@@ -61,7 +61,7 @@ export class CarsController {
     try {
       return await this.carsService.create(data);
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -73,10 +73,10 @@ export class CarsController {
     try {
       return await this.carsService.put(id, data);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Car not found') {
         throw new NotFoundException('Car not found!');
       } else {
-        throw new HttpException(error, 422);
+        throw new HttpException(error.message, 422);
       }
     }
   }
@@ -89,10 +89,10 @@ export class CarsController {
     try {
       return await this.carsService.update(id, data);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Car not found') {
         throw new NotFoundException('Car not found!');
       } else {
-        throw new HttpException(error, 422);
+        throw new HttpException(error.message, 422);
       }
     }
   }
@@ -102,10 +102,10 @@ export class CarsController {
     try {
       return await this.carsService.delete(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Car not found') {
         throw new NotFoundException('Car not found!');
       } else {
-        throw new HttpException(error, 422);
+        throw new HttpException(error.message, 422);
       }
     }
   }

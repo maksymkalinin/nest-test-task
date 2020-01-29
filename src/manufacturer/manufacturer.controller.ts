@@ -23,7 +23,7 @@ export class ManufacturersController {
     try {
       return await this.manufacturersService.getAll();
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -32,7 +32,7 @@ export class ManufacturersController {
     try {
       return await this.manufacturersService.getOne(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Manufacturer not found') {
         throw new NotFoundException('Manufacturer not found');
       } else {
         throw new HttpException(error.message, 422);
@@ -48,7 +48,7 @@ export class ManufacturersController {
     try {
       return await this.manufacturersService.create(data);
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -60,7 +60,7 @@ export class ManufacturersController {
     try {
       return await this.manufacturersService.update(id, data);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Manufacturer not found') {
         throw new NotFoundException('Manufacturer not found');
       } else {
         throw new HttpException(error.message, 422);
@@ -73,7 +73,7 @@ export class ManufacturersController {
     try {
       return await this.manufacturersService.delete(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Manufacturer not found') {
         throw new NotFoundException('Manufacturer not found');
       } else {
         throw new HttpException(error.message, 422);

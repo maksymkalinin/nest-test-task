@@ -25,7 +25,7 @@ export class OwnersService {
   public async getOne(id: string): Promise<Owner> {
     const owner = await this.ownerRepository.findOne(id);
     if (!owner) {
-      throw new Error('Not found');
+      throw new Error('Owner not found');
     }
     return owner;
   }
@@ -39,7 +39,7 @@ export class OwnersService {
     const ownerToUpdate: Owner = await this.ownerRepository.findOne(id);
 
     if (!ownerToUpdate) {
-      throw new Error('Not found');
+      throw new Error('Owner not found');
     }
 
     if (data.name) { ownerToUpdate.name = data.name; }
@@ -66,7 +66,7 @@ export class OwnersService {
   public async delete(id: string): Promise<{ id: string }> {
     const ownerToDelete = await this.ownerRepository.findOne(id);
     if (!ownerToDelete) {
-      throw new Error('Not found');
+      throw new Error('Owner not found');
     }
     await this.ownerRepository.delete(id);
     return { id };

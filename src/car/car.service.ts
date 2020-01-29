@@ -36,7 +36,7 @@ export class CarsService {
   ): Promise<Car> {
     const car: Car = await this.carRepository.findOne(id, filters);
     if (!car) {
-      throw new Error('Not found');
+      throw new Error('Car not found');
     }
     return car;
   }
@@ -46,7 +46,7 @@ export class CarsService {
       relations: ['manufacturer']
     });
     if (!car) {
-      throw new Error('Not found');
+      throw new Error('Car not found');
     }
     return car.manufacturer;
   }
@@ -71,7 +71,7 @@ export class CarsService {
     const carToUpdate: Car = await this.carRepository.findOne(id);
 
     if (!carToUpdate) {
-      throw new Error('Not found');
+      throw new Error('Car not found');
     }
 
     if (data.price) {
@@ -99,7 +99,7 @@ export class CarsService {
     const carToUpdate: Car = await this.carRepository.findOne(id);
 
     if (!carToUpdate) {
-      throw new Error('Not found');
+      throw new Error('Car not found');
     }
 
     carToUpdate.price = data.price;
@@ -152,7 +152,7 @@ export class CarsService {
   public async delete(id: string): Promise<{ id: string }> {
     const carToRemove = await this.carRepository.findOne(id);
     if (!carToRemove) {
-      throw new Error('Not found');
+      throw new Error('Car not found');
     }
     await this.carRepository.remove(carToRemove);
     return { id };

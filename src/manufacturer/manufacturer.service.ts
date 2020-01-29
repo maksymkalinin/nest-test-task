@@ -18,7 +18,7 @@ export class ManufacturersService {
   public async getOne(id: string): Promise<Manufacturer> {
     const manufacturer: Manufacturer = await this.manufacturersRepository.findOne(id);
     if (!manufacturer) {
-      throw new Error('Not found');
+      throw new Error('Manufacturer not found');
     }
     return manufacturer;
   }
@@ -36,7 +36,7 @@ export class ManufacturersService {
     const manufacturerToUpdate: Manufacturer = await this.manufacturersRepository.findOne(id);
 
     if (!manufacturerToUpdate) {
-      throw new Error('Not found');
+      throw new Error('Manufacturer not found');
     }
 
     if (data.name) { manufacturerToUpdate.name = data.name; }
@@ -50,7 +50,7 @@ export class ManufacturersService {
   public async delete(id: string): Promise<{ id: string }> {
     const manufacturerToRemove: Manufacturer = await this.manufacturersRepository.findOne(id);
     if (!manufacturerToRemove) {
-      throw new Error(`Manufacturer doesn't exist`);
+      throw new Error(`Manufacturer not found`);
     }
 
     await this.manufacturersRepository.remove(manufacturerToRemove);

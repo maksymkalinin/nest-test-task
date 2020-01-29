@@ -13,7 +13,7 @@ export class SchedulerController {
       await this.schedulerService.handleStart();
       return 'Cron job has been started';
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -23,7 +23,7 @@ export class SchedulerController {
       await this.schedulerService.handleStop();
       return 'Cron job has been stopped';
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 }

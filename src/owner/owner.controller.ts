@@ -23,7 +23,7 @@ export class OwnersController {
     try {
       return await this.ownersService.getAll();
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -32,10 +32,10 @@ export class OwnersController {
     try {
       return await this.ownersService.getOne(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Owner not found') {
         throw new NotFoundException('Owner not found');
       }
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -45,7 +45,7 @@ export class OwnersController {
     try {
       return await this.ownersService.create(data);
     } catch (error) {
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -57,7 +57,10 @@ export class OwnersController {
     try {
       return await this.ownersService.update(id, data);
     } catch (error) {
-      throw new HttpException(error, 422);
+      if (error.message === 'Owner not found') {
+        throw new NotFoundException('Owner not found');
+      }
+      throw new HttpException(error.message, 422);
     }
   }
 
@@ -66,10 +69,10 @@ export class OwnersController {
     try {
       return await this.ownersService.delete(id);
     } catch (error) {
-      if (error.message === 'Not found') {
+      if (error.message === 'Owner not found') {
         throw new NotFoundException('Owner not found');
       }
-      throw new HttpException(error, 422);
+      throw new HttpException(error.message, 422);
     }
   }
 }

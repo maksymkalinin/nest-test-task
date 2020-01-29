@@ -1,5 +1,15 @@
+import { IsOptional, IsString, IsDateString, IsUUID } from 'class-validator';
+
 export class UpdateOwnerDto {
-  readonly name?: string;
-  readonly purchaseDate?: Date;
+  @IsOptional()
+  @IsString()
+  readonly name: string;
+
+  @IsOptional()
+  @IsDateString()
+  readonly purchaseDate: Date;
+
+  @IsOptional()
+  @IsUUID('4')
   readonly carId?: string;
 }
