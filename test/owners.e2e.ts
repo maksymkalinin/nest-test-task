@@ -38,7 +38,11 @@ export default () => {
       imports: [
         TypeOrmModule.forRootAsync({
           imports: [DatabaseModule],
-          useExisting: DatabaseService
+          useFactory: (dbService: DatabaseService) => ({
+            name: 'test_owners',
+            ...dbService.createTypeOrmOptions()
+          }),
+          inject: [DatabaseService]
         }),
         OwnersModule
       ]

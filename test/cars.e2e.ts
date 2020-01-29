@@ -54,7 +54,11 @@ export default () => {
       imports: [
         TypeOrmModule.forRootAsync({
           imports: [DatabaseModule],
-          useExisting: DatabaseService
+          useFactory: (dbService: DatabaseService) => ({
+            name: 'test_cars',
+            ...dbService.createTypeOrmOptions()
+          }),
+          inject: [DatabaseService]
         }),
         CarsModule
       ],

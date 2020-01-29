@@ -1,0 +1,26 @@
+version: '3'
+services:
+  testdb:
+      container_name: 'TestNestTestDB'
+      image: 'postgres'
+      restart: 'always'
+      environment: 
+          POSTGRES_USER: 'nest_test_user'
+          POSTGRES_PASSWORD: 'n3st_t3st_us3r'
+          POSTGRES_DB: 'test_nest_test'
+      ports: 
+          - '5432:5432'
+  apptest:
+    container_name: 'TestNestTestApp'
+    build:
+      context: './'
+      dockerfile: './Dockerfile'
+    env_file: './env/.test.env'
+    command: ["npm", "run", "test"]
+    links:
+      - testdb
+    depends_on: 
+      - testdb
+    ports: 
+      - '3000:3000'
+  
