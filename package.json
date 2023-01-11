@@ -28,7 +28,7 @@
     "@nestjs/typeorm": "^6.2.0",
     "axios": "^0.19.2",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.0",
+    "class-validator": "^0.14.0",
     "moment": "^2.24.0",
     "path": "^0.12.7",
     "pg": "^7.17.1",
